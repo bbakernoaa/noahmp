@@ -40,7 +40,7 @@ if (TARGET esmf)
   message("Target esmf is already found. Skip find_package ...")
 else()
   set(USE_ESMF_STATIC_LIBS TRUE)
-  find_package(ESMF REQUIRED)
+  find_package(ESMF)
   if (ESMF_FOUND)
     set(CMAKE_Fortran_COMPILER "${ESMF_F90COMPILER}")
     set(CMAKE_Fortran_FLAGS "${ESMF_F90COMPILEOPTS} ${ESMF_F90COMPILEPATHS}")
@@ -68,13 +68,19 @@ add_definitions(-DCCPP)
 
 #------------------------------------------------------------------------------
 # NOAHMP
-add_library(noahmp STATIC ${_noahmp_cap_files} ${_noahmp_ccpp_files} ${_noahmp_files})
+if(ESMF_FOUND)
+  add_library(noahmp STATIC ${_noahmp_cap_files} ${_noahmp_ccpp_files} ${_noahmp_files})
+  target_link_libraries(noahmp PUBLIC esmf fms)
+else()
+  add_library(noahmp STATIC ${_noahmp_ccpp_files} ${_noahmp_files})
+endif()
+
 set_target_properties(noahmp PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include
 )
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
                                          $<INSTALL_INTERFACE:include>)
-target_link_libraries(noahmp PUBLIC esmf fms)
+target_link_libraries(noahmp PUBLIC NetCDF::NetCDF_C MPI::MPI_Fortran)
 
 #------------------------------------------------------------------------------
 # CMake export for ESMX driver
@@ -102,3 +108,8 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include DESTINATION ${CMAKE_INSTAL
 
 install(EXPORT noahmp
 	DESTINATION lib/cmake)
+
+#------------------------------------------------------------------------------
+# Tests
+enable_testing()
+add_subdirectory(tests)

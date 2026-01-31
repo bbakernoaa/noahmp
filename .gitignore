@@ -1,0 +1,30 @@
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+
+# Build directory
+build/
+
+# Object files and libraries
+*.o
+*.mod
+*.a
+*.so
+*.dylib
+
+# Executables
+test_physcons
+test_similarity
+test_options
+test_glacier_options
+
+# OS-specific
+.DS_Store
+Thumbs.db
