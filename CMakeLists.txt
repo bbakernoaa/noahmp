@@ -35,7 +35,7 @@ list(APPEND _noahmp_files src/module_sf_noahmplsm.F90
 #------------------------------------------------------------------------------
 # Find dependencies
 find_package(MPI REQUIRED)
-find_package(NetCDF REQUIRED)
+find_package(NetCDF REQUIRED COMPONENTS Fortran)
 if (TARGET esmf)
   message("Target esmf is already found. Skip find_package ...")
 else()
@@ -80,7 +80,7 @@ set_target_properties(noahmp PROPERTIES
 )
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
                                          $<INSTALL_INTERFACE:include>)
-target_link_libraries(noahmp PUBLIC NetCDF::NetCDF_C MPI::MPI_Fortran)
+target_link_libraries(noahmp PUBLIC NetCDF::NetCDF_Fortran MPI::MPI_Fortran)
 
 #------------------------------------------------------------------------------
 # CMake export for ESMX driver
