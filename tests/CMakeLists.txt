@@ -29,3 +29,8 @@ add_test(NAME test_sfcdif4 COMMAND test_sfcdif4)
 add_executable(test_glacier test_glacier.F90)
 target_link_libraries(test_glacier noahmp)
 add_test(NAME test_glacier COMMAND test_glacier)
+
+# Add test for noahmp_sflx
+add_executable(test_sflx test_sflx.F90)
+target_link_libraries(test_sflx noahmp)
+add_test(NAME test_sflx COMMAND test_sflx)

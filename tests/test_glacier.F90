@@ -17,6 +17,8 @@ program test_glacier
   character(len=256) :: errmsg
   integer :: errflg
 
+  integer :: i_alb, i_snf, i_tbot, i_stc, i_gla, i_sfc, i_trs
+
   iloc = 1
   jloc = 1
   dt = 3600.0
@@ -70,28 +72,36 @@ program test_glacier
 
   print *, "Testing noahmp_glacier with various configurations..."
 
-  do itime = 1, 2
-     do sfctmp = 260.0, 280.0, 20.0
-        print *, "Config: itime=", itime, " sfctmp=", sfctmp
-        call noahmp_glacier ( &
-                         iloc      ,jloc    ,cosz     ,nsnow    ,nsoil   ,dt        , &
-                         sfctmp    ,sfcprs  ,uu       ,vv       ,q2      ,soldn     , &
-                         prcp      ,lwdn    ,tbot     ,zlvl     ,ficeold ,zsoil     , &
-                         .true.    ,sfcprs  ,sfcprs   ,sfcprs   ,                     &
-                         psfc      ,pblhx  ,iz0tlnd   ,itime    ,                     &
-                         sigmaf1   ,garea1  ,psi_opt   ,                               &
-                         ep_1      ,ep_2   ,epsm1     ,cp       ,                     &
-                         qsnow     ,sneqvo  ,albold   ,cm       ,ch      ,isnow     , &
-                         sneqv     ,smc     ,zsnso    ,snowh    ,snice   ,snliq     , &
-                         tg        ,stc     ,sh2o     ,tauss    ,qsfc               , &
-                         fsa       ,fsr     ,fira     ,fsh      ,fgev    ,ssoil     , &
-                         trad      ,edir    ,runsrf   ,runsub   ,sag     ,albedo    , &
-                         qsnbot    ,ponding ,ponding1 ,ponding2 ,t2m,q2e ,z0h_total , &
-                         emissi    ,fpice   ,ch2b     , esnow   , albsnd , albsni   , &
-                         errmsg    ,errflg)
+  do i_alb = 1, 2
+     do i_snf = 1, 3
+        do i_stc = 1, 2
+           do i_gla = 1, 2
+              print *, "Config: alb=", i_alb, " snf=", i_snf, " stc=", i_stc, " gla=", i_gla
+              call noahmp_options_glacier(i_alb, i_snf, 2, i_stc, i_gla, 1, 1)
+
+              errmsg = ""
+              errflg = 0
+              call noahmp_glacier ( &
+                               iloc      ,jloc    ,cosz     ,nsnow    ,nsoil   ,dt        , &
+                               sfctmp    ,sfcprs  ,uu       ,vv       ,q2      ,soldn     , &
+                               prcp      ,lwdn    ,tbot     ,zlvl     ,ficeold ,zsoil     , &
+                               .true.    ,sfcprs  ,sfcprs   ,sfcprs   ,                     &
+                               psfc      ,pblhx  ,iz0tlnd   ,itime    ,                     &
+                               sigmaf1   ,garea1  ,psi_opt   ,                               &
+                               ep_1      ,ep_2   ,epsm1     ,cp       ,                     &
+                               qsnow     ,sneqvo  ,albold   ,cm       ,ch      ,isnow     , &
+                               sneqv     ,smc     ,zsnso    ,snowh    ,snice   ,snliq     , &
+                               tg        ,stc     ,sh2o     ,tauss    ,qsfc               , &
+                               fsa       ,fsr     ,fira     ,fsh      ,fgev    ,ssoil     , &
+                               trad      ,edir    ,runsrf   ,runsub   ,sag     ,albedo    , &
+                               qsnbot    ,ponding ,ponding1 ,ponding2 ,t2m,q2e ,z0h_total , &
+                               emissi    ,fpice   ,ch2b     , esnow   , albsnd , albsni   , &
+                               errmsg    ,errflg)
+           end do
+        end do
      end do
   end do
 
-  print *, "noahmp_glacier comprehensive test PASSED"
+  print *, "noahmp_glacier comprehensive test finished"
 
 end program test_glacier
