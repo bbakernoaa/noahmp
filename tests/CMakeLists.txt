@@ -19,3 +19,18 @@ add_test(NAME test_options COMMAND test_options)
 add_executable(test_glacier_options test_glacier_options.F90)
 target_link_libraries(test_glacier_options noahmp)
 add_test(NAME test_glacier_options COMMAND test_glacier_options)
+
+# Add test for sfcdif4
+add_executable(test_sfcdif4 test_sfcdif4.F90)
+target_link_libraries(test_sfcdif4 noahmp)
+add_test(NAME test_sfcdif4 COMMAND test_sfcdif4)
+
+# Add test for noahmp_glacier
+add_executable(test_glacier test_glacier.F90)
+target_link_libraries(test_glacier noahmp)
+add_test(NAME test_glacier COMMAND test_glacier)
+
+# Add test for noahmp_sflx
+add_executable(test_sflx test_sflx.F90)
+target_link_libraries(test_sflx noahmp)
+add_test(NAME test_sflx COMMAND test_sflx)
